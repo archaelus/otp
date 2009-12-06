@@ -1,0 +1,145 @@
+<html>
+<title>Currently in the 'pu' branch</title>
+<style type="text/css" media="all">
+    body {
+      width: 600px;
+    }
+</style>
+<body>
+<h1>Currently in the 'pu' branch</h1>
+<p>The comment about each topic branch is taken from the latest
+<em>What's cooking in erlang/otp</em> email and may no longer apply if
+the topic branch has been updated.
+<ul>
+<li><a href="http://github.com/erlang/otp/commit/2924df53a7f13b96b4057528b085d256dc17b697">jp/dependencies_makefile</a> (compiler, erts):
+
+<ul>
+<li><a href="http://github.com/erlang/otp/commit/bf2708d3b92705320679c51ace9d2c208d779298">squash! fix snprintf for Windows</a></li>
+<li><a href="http://github.com/erlang/otp/commit/7cbc4374a3621e26067c187ce36d3e75dfa70873">Add dependencies Makefile generation to erlc(1) and compile(3)</a></li>
+</ul>
+<p></li>
+<li><a href="http://github.com/erlang/otp/commit/7912b9c1ccc1f91b31f7b606fb19c6b2d68fe2f6">is/mnesia-send-compressed</a> (mnesia):
+
+<ul>
+<li><a href="http://github.com/erlang/otp/commit/583d00b9085681414bf8855db3f0063291eafd45">Update documentation to describe the new Mnesia option "send_compressed"</a></li>
+<li><a href="http://github.com/erlang/otp/commit/86f786eb11d77171a80bb3cd3b7298fbb787534f">Add option to compress data when copying tables between Mnesia nodes</a></li>
+</ul>
+<p><i>New topic branch</i>
+<p>
+</li>
+<li><a href="http://github.com/erlang/otp/commit/54077ddb2e1b7907c90b7abc77575d54b3b2f081">yh/fix-re-run-corruption</a> (erts):
+
+<ul>
+<li><a href="http://github.com/erlang/otp/commit/9ac35e83bee6d71abd73cb4047c4b4593176496e">Fix re:run/3 sometimes executes on corrupted data by garbage collection</a></li>
+</ul>
+<p></li>
+<li><a href="http://github.com/erlang/otp/commit/067c27358e4024035415c3040a68af6846f9e352">egil/binary-gc</a> (erts):
+
+<ul>
+<li><a href="http://github.com/erlang/otp/commit/bcd0b649dd68a740efb8d8b8544d8fb4883b53da">Add documentation for binary heap size settings.</a></li>
+<li><a href="http://github.com/erlang/otp/commit/33a2f7a2917a5ff92fea7a5e0f733062e8e2beaa">Add tracing capabilities for binary virtual heap</a></li>
+<li><a href="http://github.com/erlang/otp/commit/bfe4308c67463cd4868ef9688c99176abc371db6">Add min heap size start options to beam and erl</a></li>
+<li><a href="http://github.com/erlang/otp/commit/94f7a20947289a62a2608bfe807a984181bbf347">Improve binary garbage collection</a></li>
+</ul>
+<p></li>
+<li><a href="http://github.com/erlang/otp/commit/097eab3c42aae85bbe5ae40fe7a20e13911517d7">wt/ssl-resume-session</a> (ssl):
+
+<ul>
+<li><a href="http://github.com/erlang/otp/commit/f8358aad4669fc76660ba6902d7d94212c441ef8">new_ssl fix session reuse</a></li>
+</ul>
+<p></li>
+<li><a href="http://github.com/erlang/otp/commit/8978d361ab8d688280d3d67274566a9831de8424">wt/ssl_certreq_send_ca_list</a> (public_key, ssl):
+
+<ul>
+<li><a href="http://github.com/erlang/otp/commit/638ad46432719e973c458cc65b0252081599b7f1">Send CA list during Certificate Request in new_ssl</a></li>
+</ul>
+<p></li>
+<li><a href="http://github.com/erlang/otp/commit/9a94e7cca822eb7e3472cc3e44d250a0c188a7c0">sc/sctp-connect-nowait</a> (kernel):
+
+<ul>
+<li><a href="http://github.com/erlang/otp/commit/ae3d819044ea6fb77ecf15ceed4a0cfe611572b4">Implement a non-blocking SCTP connect</a></li>
+</ul>
+<p></li>
+<li><a href="http://github.com/erlang/otp/commit/cd9cbaa04da22f02dd01d3a1f278713c5eb51c97">km/http-host-header-fix</a> (inets):
+
+<ul>
+<li><a href="http://github.com/erlang/otp/commit/75a3f7c4c40f7b82384054b9826a25777d51f6b9">Fix inets HTTP client bug crafting Host header when port is not 80</a></li>
+</ul>
+<p></li>
+<li><a href="http://github.com/erlang/otp/commit/62dc0f1f3ceabd445ccdcfd0e1a20a87b93bed7a">va/rb-improvements</a> (sasl):
+
+<ul>
+<li><a href="http://github.com/erlang/otp/commit/5391383193d4fe024c470c8db7579f45dd9a8c3d">New function to filter reports by date</a></li>
+<li><a href="http://github.com/erlang/otp/commit/ed283484cfff13405da02e097e98fe2a8dc02c65">New rb:filter/1 function to ease report filtering</a></li>
+<li><a href="http://github.com/erlang/otp/commit/e5bd09137ea459255f1661efc4cc5ca1bea4bfdf">Add rb:re/1 to grep reports using the re module</a></li>
+<li><a href="http://github.com/erlang/otp/commit/07c6ad442552a1b8d4d10a68b526378368a59253">Fix minor typo in read_report/1</a></li>
+</ul>
+<p></li>
+<li><a href="http://github.com/erlang/otp/commit/ac663868acb0bfa93bd038dbb181373e7244164e">uw/shell-tab-completion</a> (stdlib):
+
+<ul>
+<li><a href="http://github.com/erlang/otp/commit/1c3a6c89c4f8d25dc0a3f71f4967ad80729cdbfe">Shell tab completion now works for quoted module and function names</a></li>
+</ul>
+<p></li>
+<li><a href="http://github.com/erlang/otp/commit/df8ea7a80838356aa34430d251f8aa8ef33aca90">cf/compile_warning_as_error</a> (compiler, erts):
+
+<ul>
+<li><a href="http://github.com/erlang/otp/commit/d29a3356dcd6664c840590aa751311ae6bf28fa1">Add option -Werror in erlc(1)</a></li>
+<li><a href="http://github.com/erlang/otp/commit/13124f55353f7942ead0c1ed32b8a3bce1f396d3">compile: add flag warnings_as_errors to treat warnings as errors</a></li>
+<li><a href="http://github.com/erlang/otp/commit/8a944af92a3fa6ebdd6ee2f3c1a1e40ddf26d40b">compile.erl: remove trailing whitespace</a></li>
+</ul>
+<p></li>
+<li><a href="http://github.com/erlang/otp/commit/f3238625c1dbbd2b7e130dd2dddc5a6a8337f5af">cf/epp-macro-overloading</a> (otp, stdlib):
+
+<ul>
+<li><a href="http://github.com/erlang/otp/commit/162ec270ed3c9a2a1aa8469b61525f3f184a4057">update the documentation on preprocessor in the reference manual</a></li>
+<li><a href="http://github.com/erlang/otp/commit/8dcc9f8f1c2949d5d6d820294b3584c097c932e3">epp: change rules to choose the right version of a macro</a></li>
+<li><a href="http://github.com/erlang/otp/commit/f7a89593e50a5be9e73b954109a4009ff07b4878">epp: Add support of macros overloading</a></li>
+<li><a href="http://github.com/erlang/otp/commit/52543e06781ef0e9676f75636d0d069c1a813664">epp: fix bug in the function scan_undef</a></li>
+</ul>
+<p>Extend the pre-processor to allow overloading of macros with
+the same name but different arities. Now with documentation.
+
+<p>
+</li>
+<li><a href="http://github.com/erlang/otp/commit/762faf32400f24121cc6da07f415aec169c1c5d3">bg/otp_build-improvements</a> (otp, stdlib):
+
+<ul>
+<li><a href="http://github.com/erlang/otp/commit/812812e3f163a21640e51905baf42bca05acfdd6">Fix spelling, remove obsolete command</a></li>
+<li><a href="http://github.com/erlang/otp/commit/9c1b2d0c4dde604e46edf8d45000ab1d71dd3fa3">Support updating preloaded files in a git repository</a></li>
+<li><a href="http://github.com/erlang/otp/commit/3e4db417a616038c9f327e9746544127067aa96e">Support updating the primary bootstrap in a git repository</a></li>
+<li><a href="http://github.com/erlang/otp/commit/faac8129e160c133686e334a6b7e9497b6be1ed4">Determine which VCS is being used</a></li>
+<li><a href="http://github.com/erlang/otp/commit/78fbf079c258f4ae55ec8f18f621c25ec4dd63c8">stdlib makefile: Add explicit rule</a></li>
+</ul>
+<p></li>
+<li><a href="http://github.com/erlang/otp/commit/02b8126fb277b1d967de78c405598712c838fbf9">at/odbc_osx_fix</a> (odbc):
+
+<ul>
+<li><a href="http://github.com/erlang/otp/commit/88c71c95d23afc3d185d64b050cb5fba243d4cee">Workaround broken ODBC implementation on OSX 10.5</a></li>
+</ul>
+<p></li>
+<li><a href="http://github.com/erlang/otp/commit/51c42b31629ed056f7e0b3100637e17cf0a46018">db/tv_nthtail_fix</a> (tv):
+
+<ul>
+<li><a href="http://github.com/erlang/otp/commit/abe07595f90a5a83ce96100fbd1c0da40a765704">Fix for tv which restarts while trying to open a table</a></li>
+</ul>
+<p>We will cook this topic for a while and include it in the next
+release unless someone finds a problem with it or a better fix.
+
+<p>
+</li>
+<li><a href="http://github.com/erlang/otp/commit/80f97f77b45386e6a2ba7f98e5dc8f653fa0731b">bd/http_chunk_fix</a> (inets):
+
+<ul>
+<li><a href="http://github.com/erlang/otp/commit/c2553beb7e6090cf9b0f4d662a99717c25221e1c">http_chunk data handling/passing improvement.</a></li>
+</ul>
+<p></li>
+<li><a href="http://github.com/erlang/otp/commit/438cea4f06235512e470f28ac3fcaf63ef9e11ea">po/odbc-update-delete-no-rows</a> (odbc):
+
+<ul>
+<li><a href="http://github.com/erlang/otp/commit/1a564f84da39a309e40353ae52f2bb4366268a1e">SQL_NO_DATA and SQLSTATE 00000 indicate success for updates/deletes that affect no rows</a></li>
+</ul>
+<p></li>
+</ul>
+</body>
+</html>
