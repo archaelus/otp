@@ -724,15 +724,8 @@ get_modules(MSL) ->
 %%-----------------------------------------------------------------
 format_status(Opt, StatusData) ->
     [PDict, SysState, Parent, _Debug, [ServerName, MSL, _Hib]] = StatusData,
-    StatusHdr = "Status for event handler",
-    Header = if
-		 is_pid(ServerName) ->
-		     lists:concat([StatusHdr, " ", pid_to_list(ServerName)]);
-		 is_atom(ServerName); is_list(ServerName) ->
-		     lists:concat([StatusHdr, " ", ServerName]);
-		 true ->
-		     {StatusHdr, ServerName}
-	     end,
+    Header = gen:format_status_header("Status for event handler",
+                                      ServerName),
     FmtMSL = [case erlang:function_exported(Mod, format_status, 2) of
 		  true ->
 		      Args = [PDict, State],
