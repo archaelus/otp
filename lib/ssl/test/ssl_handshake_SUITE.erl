@@ -35,7 +35,10 @@ suite() -> [{ct_hooks,[ts_install_cth]}].
 all() -> [
 	decode_hello_handshake,
 	decode_single_hello_extension_correctly,
-	decode_unknown_hello_extension_correctly].
+	decode_unknown_hello_extension_correctly,
+	decode_sni_hello_extension_correctly,
+	decode_sni_handshake
+	].
 
 %%--------------------------------------------------------------------
 %% Test Cases --------------------------------------------------------
@@ -72,3 +75,29 @@ decode_unknown_hello_extension_correctly(_Config) ->
 	Extensions = ssl_handshake:dec_hello_extensions(<<FourByteUnknown/binary, Renegotiation/binary>>, []),
 	[{renegotiation_info,#renegotiation_info{renegotiated_connection = <<0>>}}] = Extensions.
 	
+
+decode_sni_hello_extension_correctly(_Config) ->
+    SNIExt = <<0,0,0,20,0,18,0,0,15,102,111,
+               111,46,101,120,97,109,112,108,101,46,99,111,109>>,
+    Extensions = ssl_handshake:dec_hello_extensions(SNIExt, []),
+    [{server_name_indication,
+      #server_name_list{names =
+                            [#server_name{hostname = <<"foo.example.com">>}]}}]
+      = Extensions.
+
+decode_sni_handshake(_Config) ->
+    ClientHelloFragment = <<1,0,0,116,3,1,80,91,143,53,246,93,213,47,
+                            185,134,173,151,94,190,51,167,196,21,234,
+                            56,45,87,53,35,226,179,65,216,105,27,88,
+                            204,0,0,46,0,57,0,56,0,53,0,22,0,19,0,10,0,
+                            51,0,50,0,47,0,154,0,153,0,150,0,5,0,4,0,
+                            21,0,18,0,9,0,20,0,17,0,8,0,6,0,3,0,255,2,
+                            1,0,0,28,0,0,0,20,0,18,0,0,15,102,111,111,
+                            46,101,120,97,109,112,108,101,46,99,111,
+                            109,0,35,0,0>>,
+    Version = {3, 1},
+    {[{#client_hello{server_name_indication =
+           #server_name_list{names =
+               [#server_name{hostname = <<"foo.example.com">>} ]}},
+       _}],
+     _} = ssl_handshake:get_tls_handshake(Version, ClientHelloFragment, <<>>).
