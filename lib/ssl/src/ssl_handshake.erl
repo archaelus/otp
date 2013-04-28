@@ -1023,6 +1023,7 @@ dec_hs(_Version, ?CLIENT_HELLO, <<?BYTE(Major), ?BYTE(Minor), Random:32/binary,
     SRP = proplists:get_value(srp, DecodedExtensions, undefined),
     HashSigns = proplists:get_value(hash_signs, DecodedExtensions, undefined),
     NextProtocolNegotiation = proplists:get_value(next_protocol_negotiation, DecodedExtensions, undefined),
+    SNI = proplists:get_value(server_name_indication, DecodedExtensions, undefined),
 
     #client_hello{
        client_version = {Major,Minor},
@@ -1033,7 +1034,8 @@ dec_hs(_Version, ?CLIENT_HELLO, <<?BYTE(Major), ?BYTE(Minor), Random:32/binary,
        renegotiation_info = RenegotiationInfo,
 	srp = SRP,
        hash_signs = HashSigns,
-       next_protocol_negotiation = NextProtocolNegotiation
+       next_protocol_negotiation = NextProtocolNegotiation,
+       server_name_indication = SNI
       };
 
 dec_hs(_Version, ?SERVER_HELLO, <<?BYTE(Major), ?BYTE(Minor), Random:32/binary,
@@ -1237,6 +1239,15 @@ dec_hello_extensions(<<?UINT16(?SIGNATURE_ALGORITHMS_EXT), ?UINT16(Len),
     dec_hello_extensions(Rest, [{hash_signs,
 				 #hash_sign_algos{hash_sign_algos = HashSignAlgos}} | Acc]);
 
+dec_hello_extensions(<<?UINT16(?SNI_EXT), ?UINT16(Len), ExtensionsData:Len/binary, Rest/binary>>, Acc) ->
+    << ?UINT16(ListLen), NameList:ListLen/binary >> = ExtensionsData,
+    Names = [ #server_name{hostname=Name}
+	      || << ?SNI_HOSTNAME,
+		    ?UINT16(NameLen), Name:NameLen/binary>> <= NameList],
+    Prop = {server_name_indication, #server_name_list{names=Names}},
+    dec_hello_extensions(Rest, [Prop | Acc]);
+
+
 %% Ignore data following the ClientHello (i.e.,
 %% extensions) if not understood.
 
@@ -1287,13 +1298,14 @@ enc_hs(#client_hello{client_version = {Major, Minor},
 		     renegotiation_info = RenegotiationInfo,
 		     srp = SRP,
 		     hash_signs = HashSigns,
-		     next_protocol_negotiation = NextProtocolNegotiation}, _Version) ->
+		     next_protocol_negotiation = NextProtocolNegotiation,
+		     server_name_indication = SNI}, _Version) ->
     SIDLength = byte_size(SessionID),
     BinCompMethods = list_to_binary(CompMethods),
     CmLength = byte_size(BinCompMethods),
     BinCipherSuites = list_to_binary(CipherSuites),
     CsLength = byte_size(BinCipherSuites),
-    Extensions0 = hello_extensions(RenegotiationInfo, SRP, NextProtocolNegotiation),
+    Extensions0 = hello_extensions(RenegotiationInfo, SRP, NextProtocolNegotiation, SNI),
     Extensions1 = if
 		      Major == 3, Minor >=3 -> Extensions0 ++ hello_extensions(HashSigns);
 		      true -> Extensions0
@@ -1434,8 +1446,9 @@ enc_sign(_HashSign, Sign, _Version) ->
 hello_extensions(RenegotiationInfo, NextProtocolNegotiation) ->
     hello_extensions(RenegotiationInfo) ++ next_protocol_extension(NextProtocolNegotiation).
 
-hello_extensions(RenegotiationInfo, SRP, NextProtocolNegotiation) ->
-    hello_extensions(RenegotiationInfo) ++ hello_extensions(SRP) ++ next_protocol_extension(NextProtocolNegotiation).
+hello_extensions(RenegotiationInfo, SRP, NextProtocolNegotiation, SNI) ->
+    hello_extensions(RenegotiationInfo) ++ hello_extensions(SRP) ++
+	next_protocol_extension(NextProtocolNegotiation) ++ hello_extensions(SNI).
 
 %% Renegotiation info
 hello_extensions(#renegotiation_info{renegotiated_connection = undefined}) ->
@@ -1445,6 +1458,8 @@ hello_extensions(#renegotiation_info{} = Info) ->
 hello_extensions(#srp{} = Info) ->
     [Info];
 hello_extensions(#hash_sign_algos{} = Info) ->
+    [Info];
+hello_extensions(#server_name_list{} = Info) ->
     [Info];
 hello_extensions(undefined) ->
     [].
@@ -1462,6 +1477,15 @@ enc_hello_extensions([], Acc) ->
     Size = byte_size(Acc),
     <<?UINT16(Size), Acc/binary>>;
 
+enc_hello_extensions([#server_name_list{names = Names} | Rest], Acc) ->
+    ServerNameList = << << ?SNI_HOSTNAME,
+			   ?UINT16((byte_size(Name))), Name/binary>>
+			|| #server_name{hostname = Name} <- Names >>,
+    SNIData = << ?UINT16((byte_size(ServerNameList))),
+		 ServerNameList/binary >>,
+    enc_hello_extensions(Rest, <<?UINT16(?SNI_EXT),
+				 ?UINT16((byte_size(SNIData))),
+				 SNIData/binary, Acc/binary >>);
 enc_hello_extensions([#next_protocol_negotiation{extension_data = ExtensionData} | Rest], Acc) ->
     Len = byte_size(ExtensionData),
     enc_hello_extensions(Rest, <<?UINT16(?NEXTPROTONEG_EXT), ?UINT16(Len), ExtensionData/binary, Acc/binary>>);

@@ -102,7 +102,8 @@
 	  renegotiation_info,
 	  srp,                % srp username to send
 	  hash_signs,          % supported combinations of hashes/signature algos
-	  next_protocol_negotiation = undefined % [binary()]
+	  next_protocol_negotiation = undefined, % [binary()]
+	  server_name_indication = undefined
 	 }).
 
 -record(server_hello, {
@@ -303,6 +304,17 @@
 -record(next_protocol_negotiation, {extension_data}).
 
 -record(next_protocol, {selected_protocol}).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Server Name Indication RFC 3546 Section 3.1
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+-define(SNI_EXT, 16#0000).
+
+-define(SNI_HOSTNAME, 16#00).
+
+-record(server_name_list, {names = []}).
+
+-record(server_name, {hostname :: binary()}).
 
 -endif. % -ifdef(ssl_handshake).
 
